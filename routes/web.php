@@ -36,11 +36,13 @@ Route::middleware('cekLogin')->group(function () {
   Route::get('/export-category/pdf', [CategoryController::class, 'exportPdf'])->name('export-category-pdf');
   Route::get('/export-stock/pdf', [StockController::class, 'exportPdf'])->name('export-stock-pdf');
   Route::get('/export-pelanggan/pdf', [PelangganController::class, 'exportPdf'])->name('export-pelanggan-pdf');
+  Route::get('/export-meja/pdf', [MejaController::class, 'exportPdf'])->name('export-meja-pdf');
 
   Route::post('/import-menu', [MenuController::class, 'import'])->name('import-menu');
   Route::post('/import-category', [CategoryController::class, 'import'])->name('import-category');
   Route::post('/import-stock', [StockController::class, 'import'])->name('import-stock');
   Route::post('/import-pelanggan', [PelangganController::class, 'import'])->name('import-pelanggan');
+  Route::post('/import-meja', [MejaController::class, 'import'])->name('import-meja');
 });
 
 Route::get('/login', [LoginController::class, 'loginForm'])->name('login')->middleware('guest');

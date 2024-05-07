@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Exports\MejaExport;
+use App\Http\Requests\ImportRequest;
 use App\Models\Meja;
 use App\Http\Requests\StoreMejaRequest;
 use App\Http\Requests\UpdateMejaRequest;
+use App\Imports\MejaImport;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Maatwebsite\Excel\Facades\Excel;
@@ -97,5 +100,22 @@ class MejaController extends Controller
     public function export()
     {
         return Excel::download(new MejaExport, 'meja.xlsx');
+    }
+
+    public function import(ImportRequest $request)
+    {
+        $validated = $request->validated();
+
+        Excel::import(new MejaImport, $validated['file']);
+
+        return redirect()->back()->with('success', 'Import data berhasil');
+    }
+
+    public function exportPdf()
+    {
+        $meja = Meja::all();
+
+        $pdf = Pdf::loadView('meja.pdf', compact('meja'));
+        return $pdf->download('meja.pdf');
     }
 }
