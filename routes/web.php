@@ -30,14 +30,15 @@ Route::middleware('cekLogin')->group(function () {
   Route::get('/export-meja', [MejaController::class, 'export'])->name('export-meja');
   Route::get('/export-jenis', [jenisController::class, 'export'])->name('export-jenis');
   Route::get('/export-menu', [MenuController::class, 'export'])->name('export-menu');
-  Route::get('/export-category', [categoryController::class, 'export'])->name('export-category');
+  Route::get('/export-category', [CategoryController::class, 'export'])->name('export-category');
 
   Route::get('/export-menu/pdf', [MenuController::class, 'exportPdf'])->name('export-menu-pdf');
+  Route::get('/export-category/pdf', [CategoryController::class, 'exportPdf'])->name('export-category-pdf');
+  Route::get('/export-stock/pdf', [StockController::class, 'exportPdf'])->name('export-stock-pdf');
 
   Route::post('/import-menu', [MenuController::class, 'import'])->name('import-menu');
-
-
-  Route::post('pelanggan/import', [PelangganController::class, 'importData'])->name('import-pelanggan');
+  Route::post('/import-category', [CategoryController::class, 'import'])->name('import-category');
+  Route::post('/import-stock', [StockController::class, 'import'])->name('import-stock');
 });
 
 Route::get('/login', [LoginController::class, 'loginForm'])->name('login')->middleware('guest');

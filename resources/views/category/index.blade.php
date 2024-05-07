@@ -33,13 +33,23 @@
                     </button>
                 </div>
             @endif
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalFormCategory">
-                Tambah Category
-            </button>
-            <div class="mt-3">
-                <a href="{{ route('export-category') }}" class="btn btn-primary">Export Data</a>
-                @include('category.data')
+
+
+            <div class="d-flex align-items-center justify-content-start mb-5">
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalFormCategory">
+                    Tambah Category
+                </button>
+
+                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modalImportData">
+                    Import Data
+                </button>
+
+                <a href="{{ route('export-category') }}" class="btn btn-success">Export Excel</a>
+
+                <a href="{{ route('export-category-pdf') }}" class="btn btn-danger">Export pdf</a>
+
             </div>
+            @include('category.data')
         </div>
         <!-- /.card-footer-->
     </div>

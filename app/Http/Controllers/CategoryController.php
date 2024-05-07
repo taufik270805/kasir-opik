@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Exports\categoryExport;
+use App\Http\Requests\ImportRequest;
 use App\Models\Category;
 use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
+use App\Imports\CategoryImport;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Maatwebsite\Excel\Facades\Excel;
@@ -74,10 +77,10 @@ class CategoryController extends Controller
     public function update(UpdateCategoryRequest $request, Category $category)
     {
         $category->update($request->all());
-    
+
         return redirect()->route('category.index')->with('success', 'Data Category berhasil diupdate!');
     }
-    
+
 
     /**
      * Remove the specified resource from storage.
@@ -95,5 +98,22 @@ class CategoryController extends Controller
     public function export()
     {
         return Excel::download(new categoryExport, 'category.xlsx');
+    }
+
+    public function import(ImportRequest $request)
+    {
+        $validated = $request->validated();
+
+        Excel::import(new CategoryImport, $validated['file']);
+
+        return redirect()->back()->with('success', 'Import data berhasil');
+    }
+
+    public function exportPdf()
+    {
+        $categories = Category::all();
+
+        $pdf = Pdf::loadView('category.pdf', compact('categories'));
+        return $pdf->download('categories.pdf');
     }
 }
