@@ -35,16 +35,26 @@
                     </button>
                 </div>
             @endif
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalFormJenis">
-                Tambah Jenis
-            </button>
-            <div class="mt-3">
-                <a href="{{ route('export-jenis') }}" class="btn btn-primary">Export Data</a>
-                @include('jenis.data')
+
+            <div class="d-flex align-items-center justify-content-start mb-5">
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalFormJenis">
+                    Tambah Jenis
+                </button>
+
+                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modalImportData">
+                    Import Data
+                </button>
+
+                <a href="{{ route('export-jenis') }}" class="btn btn-success">Export Excel</a>
+
+
+                <a href="{{ route('export-jenis-pdf') }}" class="btn btn-danger">Export pdf</a>
+
             </div>
+            @include('jenis.data')
         </div>
         <!-- /.card-body -->
-     
+
         <!-- /.card-footer-->
     </div>
     <!-- /.card -->

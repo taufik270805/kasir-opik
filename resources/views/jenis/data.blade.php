@@ -4,6 +4,7 @@
             <th>No.</th>
             <th>Nama Jenis</th>
             <th>Kategori Id</th>
+            <th>Aksi</th>
         </tr>
     </thead>
     <tbody>

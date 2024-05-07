@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Exports\jenisExport;
+use App\Http\Requests\ImportRequest;
 use App\Models\Jenis;
 use App\Http\Requests\StoreJenisRequest;
 use App\Http\Requests\UpdateJenisRequest;
+use App\Imports\JenisImport;
 use App\Models\Category;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Maatwebsite\Excel\Facades\Excel;
@@ -98,5 +101,22 @@ class JenisController extends Controller
     public function export()
     {
         return Excel::download(new jenisExport, 'jenis.xlsx');
+    }
+
+    public function import(ImportRequest $request)
+    {
+        $validated = $request->validated();
+
+        Excel::import(new JenisImport, $validated['file']);
+
+        return redirect()->back()->with('success', 'Import data berhasil');
+    }
+
+    public function exportPdf()
+    {
+        $jenis = Jenis::all();
+
+        $pdf = Pdf::loadView('jenis.pdf', compact('jenis'));
+        return $pdf->download('jenis.pdf');
     }
 }
