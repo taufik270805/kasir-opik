@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Exports\pelangganExport;
+use App\Http\Requests\ImportRequest;
 use App\Models\pelanggan;
 use App\Http\Requests\StorepelangganRequest;
 use App\Http\Requests\UpdatepelangganRequest;
-use App\Imports\pelangganimport;
+use App\Imports\PelangganImport;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Maatwebsite\Excel\Facades\Excel;
@@ -78,10 +80,10 @@ class pelangganController extends Controller
     public function update(UpdatepelangganRequest $request, pelanggan $pelanggan)
     {
         $pelanggan->update($request->all());
-    
+
         return redirect()->route('pelanggan.index')->with('success', 'Data pelanggan berhasil diupdate!');
     }
-    
+
 
     /**
      * Remove the specified resource from storage.
@@ -101,12 +103,20 @@ class pelangganController extends Controller
         return Excel::download(new pelangganExport, 'pelanggan.xlsx');
     }
 
-    public function importData(Request $request){
-    
-        Excel::import(new pelangganimport, $request->import);
-    
-        return redirect('pelanggan')->with('success', 'Data berhasil diimport');
-    
+    public function import(ImportRequest $request)
+    {
+        $validated = $request->validated();
+
+        Excel::import(new PelangganImport, $validated['file']);
+
+        return redirect()->back()->with('success', 'Import data berhasil');
     }
-  
+
+    public function exportPdf()
+    {
+        $pelanggan = pelanggan::all();
+
+        $pdf = Pdf::loadView('pelanggan.pdf', compact('pelanggan'));
+        return $pdf->download('pelanggan.pdf');
+    }
 }

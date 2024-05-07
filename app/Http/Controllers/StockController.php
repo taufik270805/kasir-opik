@@ -3,10 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Exports\stockExport;
+use App\Http\Requests\ImportRequest;
+use App\Imports\StockImport;
 use App\Models\stock;
 use App\Http\Requests\StorestockRequest;
 use App\Http\Requests\UpdatestockRequest;
+use App\Imports\CategoryImport;
 use App\Models\Menu;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Maatwebsite\Excel\Facades\Excel;
@@ -95,5 +99,22 @@ class stockController extends Controller
     public function export()
     {
         return Excel::download(new stockExport, 'stok.xlsx');
+    }
+
+    public function import(ImportRequest $request)
+    {
+        $validated = $request->validated();
+
+        Excel::import(new StockImport, $validated['file']);
+
+        return redirect()->back()->with('success', 'Import data berhasil');
+    }
+
+    public function exportPdf()
+    {
+        $stock = stock::all();
+
+        $pdf = Pdf::loadView('stock.pdf', compact('stock'));
+        return $pdf->download('stock.pdf');
     }
 }

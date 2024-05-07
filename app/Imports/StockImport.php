@@ -2,12 +2,12 @@
 
 namespace App\Imports;
 
-use App\Models\pelanggan;
+use App\Models\stock;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class PelangganImport implements ToCollection, WithHeadingRow
+class StockImport implements ToCollection, WithHeadingRow
 {
     /**
      * @param Collection $collection
@@ -15,11 +15,9 @@ class PelangganImport implements ToCollection, WithHeadingRow
     public function collection(Collection $collection)
     {
         foreach ($collection as $item) {
-            pelanggan::create([
-                "nama" => $item['nama'],
-                "email" => $item['email'],
-                "nomor_telepon" => $item['nomor_telepon'],
-                "alamat" => $item['alamat'],
+            stock::create([
+                "menu_id" => $item['menu_id'],
+                "jumlah" => $item['jumlah'],
             ]);
         }
     }
