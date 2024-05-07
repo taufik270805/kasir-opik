@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('image', 50);
             $table->string('deskripsi', 50);
             $table->foreignId('jenis_id');
-            $table->float('harga_id');
+            $table->float('harga');
             $table->timestamps();
         });
     }

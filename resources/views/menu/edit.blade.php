@@ -22,7 +22,7 @@
                     <div class="form-group row">
                         <label for="harga_id" class="col-sm-2 col-form-label">harga</label>
                         <div class="col-sm-9">
-                            <input type="number" class="form-control" id="harga_id" name="harga_id"
+                            <input type="number" class="form-control" id="harga_edit" name="harga"
                                 placeholder="Deskripsi">
                         </div>
                     </div>

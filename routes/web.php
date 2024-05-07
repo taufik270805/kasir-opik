@@ -32,6 +32,10 @@ Route::middleware('cekLogin')->group(function () {
   Route::get('/export-menu', [MenuController::class, 'export'])->name('export-menu');
   Route::get('/export-category', [categoryController::class, 'export'])->name('export-category');
 
+  Route::get('/export-menu/pdf', [MenuController::class, 'exportPdf'])->name('export-menu-pdf');
+
+  Route::post('/import-menu', [MenuController::class, 'import'])->name('import-menu');
+
 
   Route::post('pelanggan/import', [PelangganController::class, 'importData'])->name('import-pelanggan');
 });

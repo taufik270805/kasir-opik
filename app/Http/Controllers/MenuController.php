@@ -3,12 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Exports\menuExport;
+use App\Http\Requests\ImportRequest;
 use App\Models\Menu;
 use App\Http\Requests\StoreMenuRequest;
 use App\Http\Requests\UpdateMenuRequest;
+use App\Imports\MenuImport;
 use App\Models\Category;
 use App\Models\Harga;
 use App\Models\jenis;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -98,11 +101,27 @@ class MenuController extends Controller
         $menu->delete();
 
         return redirect('menu')->with('succes', 'delete data berhasill!');
-    }    public function export()
+    }
+
+    public function export()
     {
         return Excel::download(new menuExport, 'menu.xlsx');
     }
 
+    public function import(ImportRequest $request)
+    {
+        $validated = $request->validated();
 
+        Excel::import(new MenuImport, $validated['file']);
 
+        return redirect()->back()->with('success', 'Import data berhasil');
+    }
+
+    public function exportPdf()
+    {
+        $menu = Menu::with('jenis')->get();
+
+        $pdf = Pdf::loadView('menu.pdf', compact('menu'));
+        return $pdf->download('menu.pdf');
+    }
 }

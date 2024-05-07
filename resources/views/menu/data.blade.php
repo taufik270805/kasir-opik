@@ -1,7 +1,7 @@
 <table class="table table-compact table-striped" id="data-menu">
     <thead>
         <tr>
-            <th class="text-right">ID</th>
+            <th class="text-right">No</th>
             <th class="text-right">Name</th>
             <th class="text-right">Harga</th>
             <th class="text-right">Image</th>
@@ -14,7 +14,7 @@
             <tr>
                 <td>{{ $i = !isset($i) ? ($i = 1) : ++$i }}</td>
                 <td class="text-right">{{ $p->nama }}</td>
-                <td class="text-right">{{ $p->harga_id }}</td>
+                <td class="text-right">{{ $p->harga }}</td>
                 <td class="text-right">{{ $p->image }}</td>
                 <td class="text-right">{{ $p->jenis->nama_jenis }}</td>
                 <td class="text-right">

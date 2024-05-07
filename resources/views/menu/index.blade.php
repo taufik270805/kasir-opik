@@ -1,127 +1,134 @@
 @extends('layout')
 
 @push('style')
-<!-- Tambahkan style kustom jika diperlukan -->
+    <!-- Tambahkan style kustom jika diperlukan -->
 @endpush
 
 @section('content')
-<!-- Default box -->
-<div class="content">
-    <div class="card">
-        <div class="card-header">
-            <h3 class="card-title">Menu</h3>
+    <!-- Default box -->
+    <div class="content">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Menu</h3>
 
-            <div class="card-tools">
-               
+                <div class="card-tools">
+
+                </div>
             </div>
-        </div>
-        <div class="card-body">
-            @if(session('success'))
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                {{ session('success') }}
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            @endif
+            <div class="card-body">
+                @if (session('success'))
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        {{ session('success') }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                @endif
 
-            @if($errors->any())
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            @endif
+                @if ($errors->any())
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                @endif
 
-            <button type="button" class="btn btn-primary ml-auto" data-toggle="modal" data-target="#modalFormMenu">
-                Tambah Menu
-            </button>
+                <div class="d-flex align-items-center justify-content-start mb-5">
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalFormMenu">
+                        Tambah Menu
+                    </button>
 
+                    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modalImportData">
+                        Import Data
+                    </button>
 
-            <div class="mt-3">
-                <a href="{{ route('export-menu') }}" class="btn btn-primary">Export Data</a>
+                    <a href="{{ route('export-menu') }}" class="btn btn-success">Export Excel</a>
+
+                    <a href="{{ route('export-menu-pdf') }}" class="btn btn-danger">Export pdf</a>
+
+                </div>
+
                 @include('menu.data')
+
+
+
             </div>
-        </div>
-        <!-- /.card-body -->
+            <!-- /.card-body -->
 
         </div>
         <!-- /.card-footer-->
     </div>
     @include('menu.edit')
-</div>
-@include('menu.form')
+    </div>
+    @include('menu.form')
 
-<!-- /.card -->
+    <!-- /.card -->
 
 @endsection
 
 @push('script')
-<script>
-     $('.alert-success').fadeTo(2000, 500).slideUp(500, function() {
-        $('.alert-success').slideUp(500)
-    })
-    $('.delete-data').on('click', function(e) {
-        e.preventDefault()
-        const data = $(this).closest('tr').find('td:eq(1)').text()
-        Swal.fire({
-            title: 'Are you sure?',
-            text: "You won't be able to revert this!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, delete it!'
-        }).then((result) => {
-            if (result.isConfirmed)
-                $(e.target).closest('form').submit()
-            else Swal.close()
+    <script>
+        $('.alert-success').fadeTo(2000, 500).slideUp(500, function() {
+            $('.alert-success').slideUp(500)
+        })
+        $('.delete-data').on('click', function(e) {
+            e.preventDefault()
+            const data = $(this).closest('tr').find('td:eq(1)').text()
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed)
+                    $(e.target).closest('form').submit()
+                else Swal.close()
 
+
+            })
+        })
+
+
+        $(document).on('show.bs.modal', '#modal', function(e) {
+
+            alert('tes')
+            let button = $(e.relatedTarget)
+            let id = button.data('id')
+            let nama = button.data('nama')
+            let harga = button.data('harga')
+            let image = button.data('image')
+            let deskripsi = button.data('deskripsi')
+            console.log(id)
+            $('#nama_menu').val(nama)
+            $('#harga').val(harga)
+            $('#image').val(image)
+            $('#deskripsi').val(deskripsi)
+            $('#form-menu').attr('action', `/menu/${id}`)
 
         })
-    })
 
+        $(document).on('show.bs.modal', '#modalEdit', function(e) {
+            let button = $(e.relatedTarget)
+            let id = button.data('id')
+            let nama = button.data('nama')
+            let harga = button.data('harga')
+            let image = button.data('image')
+            let deskripsi = button.data('deskripsi')
 
-    $(document).on('show.bs.modal', '#modal', function(e) {
+            $('#nama_menu_edit').val(nama)
+            $('#harga_edit').val(harga)
+            $('#image_edit').val(image)
+            $('#deskripsi_edit').val(deskripsi)
+            $('#form-edit-menu').attr('action', `/menu/${id}`)
 
-        alert('tes')
-        let button = $(e.relatedTarget)
-        let id = button.data('id')
-        let nama = button.data('nama')
-        let harga = button.data('harga')
-        let image = button.data('image')
-        let deskripsi = button.data('deskripsi')
-        console.log(id)
-        $('#nama_menu').val(nama)
-        $('#harga').val(harga)
-        $('#image').val(image)
-        $('#deskripsi').val(deskripsi)
-        $('#form-menu').attr('action', `/menu/${id}`)
-
-    })
-
-    $(document).on('show.bs.modal', '#modalEdit', function(e) {
-        let button = $(e.relatedTarget)
-        let id = button.data('id')
-        let nama = button.data('nama')
-        let harga = button.data('harga')
-        let image = button.data('image')
-        let deskripsi = button.data('deskripsi')
-        console.log(id)
-        $('#nama_menu_edit').val(nama)
-        $('#harga_edit').val(harga)
-        $('#image_edit').val(image)
-        $('#deskripsi_edit').val(deskripsi)
-        $('#form-edit-menu').attr('action', `/menu/${id}`)
-
-    });
-    
-   
-
-</script>
+        });
+    </script>
 @endpush

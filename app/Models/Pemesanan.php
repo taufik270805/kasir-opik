@@ -10,6 +10,6 @@ class Pemesanan extends Model
     use HasFactory;
 
     protected $table = 'pemesanan';
-    
-    protected $fillable = ['tanggal_pemesanan','jam_mulai','jam_selesai','nama_pemesanan','jumlah_pelanggan']
+
+    protected $fillable = ['tanggal_pemesanan', 'jam_mulai', 'jam_selesai', 'nama_pemesanan', 'jumlah_pelanggan'];
 }

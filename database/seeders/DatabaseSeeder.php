@@ -20,5 +20,7 @@ class DatabaseSeeder extends Seeder
             'email' => 'taufik1@gmail.com',
             'password' => Hash::make('ustadopik')
         ]);
+
+        $this->call(JenisSeeder::class);
     }
 }
