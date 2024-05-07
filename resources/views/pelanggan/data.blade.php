@@ -1,0 +1,38 @@
+<table class="table table-compact table-stripped" id="data-category">
+    <thead>
+        <tr>
+            <th>No.</th>
+            <th>nama</th>
+            <th>email</th>
+            <th>nomor_telepon</th>
+            <th>alamat</th>
+            <!-- <th>pelanggan_id</th> -->
+        </tr>
+    </thead>
+    <tbody>
+        @foreach($pelanggan as $p)
+        <tr>
+            <td>{{ $i = !isset($i)?$i=1:++$i}}</td>
+            <td>{{ $p->nama}}</td>
+            <td>{{ $p->email}}</td>
+            <td>{{ $p->nomor_telepon}}</td>
+            <td>{{ $p->alamat}}</td>
+            <!-- <td>{{ $p->pelanggan_id }} </td> -->
+            <td>
+                <button class="btn btn-primary show-bs-modal" data-toggle="modal" data-target="#modalEdit" data-mode="edit" data-id="{{$p->id}}" data-nama="{{$p->nama}}" data-email="{{$p->email}}" data-nomor_telepon="{{$p->nomor_telepon}}" data-alamat="{{$p->alamat}}">
+                    <i class="bi bi-pencil-fill"></i>
+                </button>
+
+                <form action="{{ route('pelanggan.destroy', $p->id) }}" method="POST" style="display: inline">
+                    @csrf
+                    @method('DELETE')
+                    <button type="button" class="btn btn-danger delete-data" data-nama="{{ $p->nama}}" data-email="{{ $p->email}}" data-nomor_telepon="{{ $p->nomor_telepon}}" data-alamat="{{ $p->alamat}}">
+                        <i class="bi bi-trash-fill"></i>
+                    </button>
+                </form>
+
+            </td>
+        </tr>
+        @endforeach
+    </tbody>
+</table>
